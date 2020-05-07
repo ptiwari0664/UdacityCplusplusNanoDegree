@@ -11,6 +11,9 @@ There are several types of projects in the course for the practice. These projec
 
 ## 1. C++ Foundations
 Learn basic C++ syntax, functions, containers, and compiling and linking with multiple files. Use OpenStreetMap and the 2D visualization library IO2D to build a route planner that displays a path between two points on a map.
+### Course Project
+You’ll learn about OpenStreetMap data and look at IO2D map display code. You will extend the IO2D map display code to use A*,
+so your program will be able to find a path between two points on the map. When the project is finished, you will be able to select starting and ending areas on a city map, and your program will find a path along the city streets to connect the start and end.
 
 ## 2. Object-Oriented Programming
 Explore Object-Oriented Programming (OOP) in C++ with examples and exercises covering the essentials of OOP like abstraction and inheritance all the way through to advanced topics like polymorphism and templates. In the end, you’ll build a Linux system monitor application to demonstrate C++ OOP in action! 
