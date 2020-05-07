@@ -1,0 +1,17 @@
+build*/
+devel*/
+logs/
+.bt
+.pcd
+.catkin_*
+.vscode*
+.zip
+.tar*
+**/*.pyc
+**/*-build
+**/*.pcd
+**/*.bag
+**/*.bt
+**/*.user
+**/*-safe
+**/*.mk
