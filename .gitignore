@@ -6,6 +6,7 @@ logs/
 .catkin_*
 .vscode*
 .zip
+.out
 .tar*
 **/*.pyc
 **/*-build
