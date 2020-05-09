@@ -16,7 +16,6 @@ If everything has worked correctly, you should now be able to run your executabl
 ```
 cd ......./PhoneDictionary/build
 ./<your_executable_name>
-
 ```
 This executable should print the output on terminal.
 If you don't remember your executable name then, go to CMakeLists file and check the first argument in add_executable. This first argument is the executable name. `add_executable(your_executable_name  path_to_file_1  path_to_file_2 ...)`
@@ -25,4 +24,4 @@ If you don't remember your executable name then, go to CMakeLists file and check
 
 Run only make, don't run cmake .. again otherwise there will be error and you need to remove build directory and redo again.
 
-> *** Note: *** : _If you do re-run CMake, or if you are having problems with your build, it can be helpful to delete your build directory and start from scratch. Otherwise, some environment variables may not be reset correctly._
+> ***Note:*** : _If you do re-run CMake, or if you are having problems with your build, it can be helpful to delete your build directory and start from scratch. Otherwise, some environment variables may not be reset correctly._
