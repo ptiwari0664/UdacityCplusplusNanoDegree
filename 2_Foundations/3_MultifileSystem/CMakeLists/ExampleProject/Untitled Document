@@ -1,0 +1,22 @@
+# How to Build a large Project using CMakeLists
+
+A typical CMake project will have a build directory in the same place as the top-level CMakeLists.txt. Make a build directory in the /home/workspace/cmake_example folder:
+
+## Build Process
+```
+cd ....../ExampleProject
+mkdir build
+cd build
+cmake ..
+make
+```
+
+## Run Process
+If everything has worked correctly, you should now be able to run your executable from the build folder:
+```
+cd ......./ExampleProject/build
+./<your_executable_name>
+
+```
+This executable should print the output on terminal.
+If you don't remember your executable name then, go to CMakeLists file and check the first argument in add_executable. This first argument is the executable name. `add_executable(your_executable_name  path_to_file_1  path_to_file_2 ...)`
