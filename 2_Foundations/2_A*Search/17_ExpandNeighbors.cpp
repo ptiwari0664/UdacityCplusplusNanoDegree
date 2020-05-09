@@ -22,6 +22,8 @@ using std::abs;
 
 enum class State {kEmpty, kObstacle, kClosed, kPath};
 
+const int delta[4][2]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+
 std::string get_working_path() {
     char cwd[1024];
     if (GetCurrentDir(cwd, sizeof(cwd)) != NULL)
@@ -130,12 +132,36 @@ void AddToOpen(const int xIn,const int yIn,const int gIn,const int hIn,
         grid[xIn][yIn] = State::kClosed;
 }
 
+void ExpandNeighbors(const vector<int> &current, std::vector<int> &goalIn, 
+                    std::vector<std::vector<int>> &opennodesIn,
+                    std::vector<std::vector<State> > &gridIn){
+
+// Get current node's data.
+  int x = current[0];
+  int y = current[1];
+  int g = current[2];
+
+  // Loop through current node's potential neighbors.
+  for (int i = 0; i < 4; i++) {
+    int x2 = x + delta[i][0];
+    int y2 = y + delta[i][1];
+
+    // Check that the potential neighbor's x2 and y2 values are on the grid and not closed.
+    if (CheckValidCell(x2, y2, gridIn)) {
+      // Increment g value and add neighbor to open list.
+      int g2 = g + 1;
+      int h2 = Heuristic(x2, y2, goalIn.at(0), goalIn.at(1));
+      AddToOpen(x2, y2, g2, h2, opennodesIn, gridIn);
+    }
+  }
+}
+
 /** 
  * Implementation of A* search algorithm
  */
 std::vector<std::vector<State>> Search(std::vector<std::vector<State> > boardIn, 
-                                        const std::vector<int> initIn,
-                                        const std::vector<int> goalIn){
+                                        std::vector<int> initIn,
+                                        std::vector<int> goalIn){
 
 std::vector<std::vector<int>> opennodes_={};
 
@@ -160,17 +186,13 @@ while(!opennodes_.empty()){
     if (x == goalIn.at(0) && goalIn.at(1)) {
         return boardIn;
     }
-    // If we're not done, expand search to current node's neighbors. This step will be completed 
-    // in a later quiz.
-    
-    
+    // If we're not done, expand search to current node's neighbors.
     // ExpandNeighbors
-
+    ExpandNeighbors(current, goalIn, opennodes_, boardIn);
+    
     } //End while loop
 
   // We've run out of new nodes to explore and haven't found a path.
-
-
 std::cout << "No path found!" << "\n";
 return std::vector<vector<State>>{};
 }
@@ -355,6 +377,49 @@ void TestCheckValidCell() {
   cout << "----------------------------------------------------------" << "\n";
 }
 
+void TestExpandNeighbors() {
+  cout << "----------------------------------------------------------" << "\n";
+  cout << "ExpandNeighbors Function Test: ";
+  vector<int> current{4, 2, 7, 3};
+  std::vector<int> goal = {4, 5};
+  vector<vector<int>> open{{4, 2, 7, 3}};
+  vector<vector<int>> solution_open = open;
+  solution_open.push_back(vector<int>{3, 2, 8, 4});
+  solution_open.push_back(vector<int>{4, 3, 8, 2});
+  vector<vector<State>> grid{{State::kClosed, State::kObstacle, State::kEmpty, State::kEmpty, State::kEmpty, State::kEmpty},
+                            {State::kClosed, State::kObstacle, State::kEmpty, State::kEmpty, State::kEmpty, State::kEmpty},
+                            {State::kClosed, State::kObstacle, State::kEmpty, State::kEmpty, State::kEmpty, State::kEmpty},
+                            {State::kClosed, State::kObstacle, State::kEmpty, State::kEmpty, State::kEmpty, State::kEmpty},
+                            {State::kClosed, State::kClosed, State::kEmpty, State::kEmpty, State::kObstacle, State::kEmpty}};
+  vector<vector<State>> solution_grid = grid;
+  solution_grid[3][2] = State::kClosed;
+  solution_grid[4][3] = State::kClosed;
+  ExpandNeighbors(current, goal, open, grid);
+  CellSort(&open);
+  CellSort(&solution_open);
+  if (open != solution_open) {
+    cout << "failed" << "\n";
+    cout << "\n";
+    cout << "Your open list is: " << "\n";
+    PrintVectorOfVectors(open);
+    cout << "Solution open list is: " << "\n";
+    PrintVectorOfVectors(solution_open);
+    cout << "\n";
+  } else if (grid != solution_grid) {
+    cout << "failed" << "\n";
+    cout << "\n";
+    cout << "Your grid is: " << "\n";
+    PrintVectorOfVectors(grid);
+    cout << "\n";
+    cout << "Solution grid is: " << "\n";
+    PrintVectorOfVectors(solution_grid);
+    cout << "\n";
+  } else {
+  	cout << "passed" << "\n";
+  }
+  cout << "----------------------------------------------------------" << "\n";
+  return;
+}
 // ------------------------------------------------------------------------
 /** 
  * Main Function
@@ -374,10 +439,11 @@ int main() {
     // TODO: Change the following line to pass "solution" to PrintBoard.
     PrintBoard(solutionBoard);
 
-      // Tests
+    // Tests
     TestHeuristic();
     TestAddToOpen();
     TestCompare();
-    //TestSearch();
+    TestSearch();
     TestCheckValidCell();
+    TestExpandNeighbors();
 }
