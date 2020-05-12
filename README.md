@@ -17,6 +17,13 @@ so your program will be able to find a path between two points on the map. When 
 
 ## 2. Object-Oriented Programming
 Explore Object-Oriented Programming (OOP) in C++ with examples and exercises covering the essentials of OOP like abstraction and inheritance all the way through to advanced topics like polymorphism and templates. In the end, you’ll build a Linux system monitor application to demonstrate C++ OOP in action! 
+### Course Project
+In this project, you’ll get a chance to put C++ OOP into action! You’ll
+write a Linux system monitor with similar functionality to the widely
+used htop application. This will not only provide you more familiarity
+the Linux operating system, but also give you insights into how a
+collection of objects can function together in C++ to form an exciting
+and complete application!
 
 ## 3. Memory Management
 Discover the power of memory management in C++ by diving deep into stack vs. heap, pointers, references, new, delete, smart pointers, and much more. By the end, you’ll be ready to work on a chatbot using modern C++ memory management techniques!
