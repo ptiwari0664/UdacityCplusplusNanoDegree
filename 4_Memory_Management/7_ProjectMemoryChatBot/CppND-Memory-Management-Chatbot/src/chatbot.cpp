@@ -44,6 +44,77 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+ChatBot::ChatBot(const ChatBot &source) // Copy constructor
+{
+    std::cout << "ChatBot Copy Constructor" << std::endl;
+
+    // Copy members
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _image = source._image; // Shallow copy
+
+}
+
+ChatBot& ChatBot::operator=(const ChatBot &source) // Copy assignment
+{
+    std::cout << "ChatBot Copy Assignment Operator" << std::endl;
+
+    if (this == &source) 
+        return *this;
+
+    // // Free _image if destination object has reserved it
+    // if (!_image) 
+    //     delete _image;
+
+    // Copy members
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _image = source._image; // Shallow copy
+
+    return *this;
+}
+
+ChatBot::ChatBot(ChatBot &&source) // Move constructor
+{
+    std::cout << "ChatBot Move Contructor" << std::endl;
+
+    // Transfering members
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _image = source._image;
+
+    // When the bot moves, ChatLogic's handle to the bot must be updated
+    _chatLogic->SetChatbotHandle(this);    
+
+    // Voiding source members
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._image = NULL;
+}
+
+ChatBot& ChatBot::operator=(ChatBot &&source) // Move assignment
+{
+    std::cout << "ChatBot Move Assignment Operator" << std::endl;
+
+    if (this == &source) 
+        return *this;
+
+    // Free _image if destination object has reserved it
+    if (!_image) delete _image;
+
+    // Transfering members
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _image = source._image;
+
+    // When the bot moves, ChatLogic's handle to the bot must be updated
+    _chatLogic->SetChatbotHandle(this);    
+
+    // Voiding source members
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._image = nullptr;
+}
 
 ////
 //// EOF STUDENT CODE
