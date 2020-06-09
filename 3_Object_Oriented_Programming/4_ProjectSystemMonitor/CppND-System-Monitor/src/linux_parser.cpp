@@ -105,6 +105,8 @@ long LinuxParser::UpTime() {
   return stol(uptime);
 }
 
+
+
 // TODO: Read and return the number of jiffies for the system
 // long LinuxParser::Jiffies() { return 0; }
 
@@ -196,7 +198,7 @@ string LinuxParser::Ram(int pid) {
       std::istringstream linestream(line);
       while (linestream >> key >> value) {
         if (key == "VmSize:") {
-          return to_string(stoi(value) / 1024);
+          return to_string(stoi(value) / 1024.0);
         }
       }
     }
@@ -243,18 +245,30 @@ string LinuxParser::User(int pid) {
 }
 
 // DONE: Read and return the uptime of a process
-long LinuxParser::UpTime(int pid) {
-  string line;
-  string var;
-  std::ifstream filestream(kProcDirectory + to_string(pid) + kStatFilename);
-  if (filestream.is_open()) {
-    while (std::getline(filestream, line)) {
-      std::istringstream linestream(line);
-      for(int i = 1; i < 23; i++) {
-        linestream >> var; // Grab the 22nd value
-      }
-      return stol(var) / sysconf(_SC_CLK_TCK); // Return uptime in seconds
-    }
+// long LinuxParser::UpTime(int pid) {
+//   string line;
+//   string var;
+//   std::ifstream filestream(kProcDirectory + to_string(pid) + kStatFilename);
+//   if (filestream.is_open()) {
+//     while (std::getline(filestream, line)) {
+//       std::istringstream linestream(line);
+//       for(int i = 1; i < 23; i++) {
+//         linestream >> var; // Grab the 22nd value
+//       }
+//       return (var) / sysconf(_SC_CLK_TCK); // Return uptime in seconds
+//     }
+//   }
+// return -1;
+// }
+
+long LinuxParser::UpTime(const int pid) { 
+  std::ifstream fileStream(kProcDirectory + std::to_string(pid) + kStatFilename);
+  std::string line;
+  if (fileStream.is_open()) {
+    std::getline(fileStream, line);
+    std::istringstream lineStream(line);
+    std::vector<std::string> data{std::istream_iterator<string>{lineStream}, std::istream_iterator<string>{}};
+    return LinuxParser::UpTime() - std::stol(data[21])/sysconf(_SC_CLK_TCK);
   }
-return -1;
+  return 0;
 }
